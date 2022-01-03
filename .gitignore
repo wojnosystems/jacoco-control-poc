@@ -1,0 +1,10 @@
+*.exec
+*.jar
+*.class
+*/build/*
+.idea/*
+*.bin
+.gradle/*
+*/.gradle/*
+*/.idea/*
+*.iml

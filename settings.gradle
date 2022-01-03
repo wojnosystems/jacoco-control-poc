@@ -1,0 +1,4 @@
+rootProject.name = 'jacoco-control-poc'
+include 'app'
+include 'cover-dumper'
+

@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    environment:
+      - "WEB_PORT=8080"
+  web-instrumented:
+    build:
+      context: .
+      dockerfile: app/instrumented.dockerfile
+    depends_on:
+      - web
+    environment:
+      - "WEB_PORT=8081"
+      - "JACOCO_AGENT_PORT=6300"
+  integration-tests:
+    build:
+      context: rspec
+    environment:
+      - "WEB_PORT=8081"
+      - "BASE_URL=http://web-instrumented:${WEB_PORT:-8081}"
+    entrypoint: ["bash", "-c", "./wait-for-it.bash web-instrumented:${WEB_PORT:-8081} --timeout=10 --strict -- rspec ."]
+    depends_on:
+      - web-instrumented
+    restart: "no"
